@@ -1,0 +1,27 @@
+{
+  "enabled": true,
+  "case": "Multiple Siblings Inside One Parent",
+  "boxes": [
+    {
+      "label": "Container 20x20x20",
+      "width": 20.0,
+      "height": 20.0,
+      "depth": 20.0,
+      "wallThickness": 0
+    },
+    {
+      "label": "Item 1",
+      "width": 9.0,
+      "height": 9.0,
+      "depth": 18.0,
+      "wallThickness": 0
+    },
+    {
+      "label": "Item 2",
+      "width": 9.0,
+      "height": 18.0,
+      "depth": 9.0,
+      "wallThickness": 0
+    }
+  ]
+}

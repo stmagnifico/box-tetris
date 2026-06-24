@@ -25,7 +25,7 @@ void main() {
       expect(config.enabled, isTrue);
       expect(config.boxes.length, 2);
       expect(config.boxes.first.wallThickness, 2);
-      expect(config.toBoxes().length, 2);
+      expect(config.boxes.first.label, 'Thick');
     });
 
     test('disabled config can be represented', () {

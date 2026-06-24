@@ -1,22 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../core/utils/volume_formatter.dart';
 import '../../domain/entities/nesting_node.dart';
 import '../providers/box_list_provider.dart';
 import '../widgets/nesting_tree_tile.dart';
 
 class ResultsScreen extends ConsumerWidget {
   const ResultsScreen({super.key});
-
-  String _formatVolume(double v) {
-    if (v >= 1000000) {
-      return '${(v / 1000000).toStringAsFixed(3)} m³';
-    }
-    if (v >= 1000) {
-      return '${(v / 1000).toStringAsFixed(1)} L';
-    }
-    return '${v.toStringAsFixed(0)} cm³';
-  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -55,16 +46,16 @@ class ResultsScreen extends ConsumerWidget {
                   const SizedBox(height: 12),
                   _StatRow(
                     label: 'Original total volume',
-                    value: _formatVolume(result.originalTotalVolume),
+                    value: formatVolume(result.originalTotalVolume),
                   ),
                   _StatRow(
                     label: 'Optimized footprint',
-                    value: _formatVolume(result.optimizedTotalVolume),
+                    value: formatVolume(result.optimizedTotalVolume),
                   ),
                   _StatRow(
                     label: 'Space saved',
                     value:
-                        '${_formatVolume(result.savedVolume)} (${result.savedPercent.toStringAsFixed(1)}%)',
+                        '${formatVolume(result.savedVolume)} (${result.savedPercent.toStringAsFixed(1)}%)',
                     highlight: true,
                   ),
                   const SizedBox(height: 8),

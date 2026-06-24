@@ -122,7 +122,6 @@ class _BoxFormDialogState extends ConsumerState<_BoxFormDialog> {
       );
     }
 
-    ref.read(nestingResultProvider.notifier).state = null;
     Navigator.pop(widget.dialogContext);
   }
 

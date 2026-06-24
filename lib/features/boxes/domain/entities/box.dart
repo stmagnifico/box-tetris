@@ -37,13 +37,6 @@ class Box {
   /// Inner cavity volume available for smaller boxes.
   double get innerVolume => innerWidth * innerHeight * innerDepth;
 
-  /// Sorted outer edge lengths — useful for rotation checks.
-  List<double> get outerDimensionsSorted => [width, height, depth]..sort();
-
-  /// Sorted inner edge lengths.
-  List<double> get innerDimensionsSorted =>
-      [innerWidth, innerHeight, innerDepth]..sort();
-
   static const Object _unset = Object();
 
   Box copyWith({

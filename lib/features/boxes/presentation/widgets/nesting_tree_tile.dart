@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../../core/utils/volume_formatter.dart';
 import '../../domain/entities/nesting_node.dart';
 
 /// Expandable tree row for one nesting branch (no Material dividers).
@@ -24,16 +25,6 @@ class _NestingTreeTileState extends State<NestingTreeTile> {
   void initState() {
     super.initState();
     _expanded = widget.depth == 0;
-  }
-
-  String _formatVolume(double v) {
-    if (v >= 1000000) {
-      return '${(v / 1000000).toStringAsFixed(2)} m³';
-    }
-    if (v >= 1000) {
-      return '${(v / 1000).toStringAsFixed(1)} L';
-    }
-    return '${v.toStringAsFixed(0)} cm³';
   }
 
   String _boxTitle() {
@@ -70,7 +61,7 @@ class _NestingTreeTileState extends State<NestingTreeTile> {
         ),
         title: Text(_boxTitle(), style: titleStyle),
         subtitle: isRoot
-            ? Text('Occupied volume: ${_formatVolume(widget.node.occupiedVolume)}')
+            ? Text('Occupied volume: ${formatVolume(widget.node.occupiedVolume)}')
             : null,
       );
     }
@@ -91,9 +82,9 @@ class _NestingTreeTileState extends State<NestingTreeTile> {
           ),
           title: Text(_boxTitle(), style: titleStyle),
           subtitle: isRoot
-              ? Text('Occupied volume: ${_formatVolume(widget.node.occupiedVolume)}')
+              ? Text('Occupied volume: ${formatVolume(widget.node.occupiedVolume)}')
               : Text(
-                  '${_formatVolume(widget.node.box.volume)} · '
+                  '${formatVolume(widget.node.box.volume)} · '
                   '${widget.node.children.length} nested',
                 ),
           trailing: Icon(

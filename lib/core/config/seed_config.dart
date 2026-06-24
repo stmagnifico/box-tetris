@@ -1,5 +1,3 @@
-import '../../features/boxes/domain/entities/box.dart';
-
 /// One box entry from [SeedConfig].
 class SeedBoxEntry {
   const SeedBoxEntry({
@@ -26,17 +24,6 @@ class SeedBoxEntry {
     );
   }
 
-  Box toBox({required String id}) {
-    return Box(
-      id: id,
-      width: width,
-      height: height,
-      depth: depth,
-      wallThickness: wallThickness,
-      label: label,
-    );
-  }
-
   static double _readPositive(Object? value, String field) {
     final number = _asDouble(value, field);
     if (number <= 0) {
@@ -49,7 +36,7 @@ class SeedBoxEntry {
     if (value == null) return defaultValue;
     final number = _asDouble(value, 'wallThickness');
     if (number < 0) {
-      throw FormatException('wallThickness must be non-negative');
+      throw const FormatException('wallThickness must be non-negative');
     }
     return number;
   }
@@ -82,12 +69,5 @@ class SeedConfig {
           .map((item) => SeedBoxEntry.fromJson(item as Map<String, dynamic>))
           .toList(),
     );
-  }
-
-  List<Box> toBoxes() {
-    return [
-      for (var i = 0; i < boxes.length; i++)
-        boxes[i].toBox(id: 'seed_$i'),
-    ];
   }
 }

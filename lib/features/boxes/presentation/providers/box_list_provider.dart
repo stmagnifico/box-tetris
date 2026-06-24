@@ -3,11 +3,6 @@ import 'package:uuid/uuid.dart';
 
 import '../../domain/entities/box.dart';
 import '../../domain/entities/nesting_node.dart';
-import '../../domain/services/box_optimizer.dart';
-
-final boxOptimizerProvider = Provider<BoxOptimizer>((ref) {
-  return BoxOptimizer();
-});
 
 /// User-managed list of boxes (manual input; CV module will plug in here later).
 class BoxListNotifier extends StateNotifier<List<Box>> {
@@ -72,5 +67,18 @@ final boxListProvider =
   return BoxListNotifier();
 });
 
-/// Last optimization result (null until user runs calculation).
-final nestingResultProvider = StateProvider<NestingResult?>((ref) => null);
+/// Last optimization result. Resets automatically whenever the box list changes.
+final nestingResultProvider =
+    StateNotifierProvider<NestingResultNotifier, NestingResult?>((ref) {
+  return NestingResultNotifier(ref);
+});
+
+class NestingResultNotifier extends StateNotifier<NestingResult?> {
+  NestingResultNotifier(Ref ref) : super(null) {
+    ref.listen<List<Box>>(boxListProvider, (_, __) {
+      state = null;
+    });
+  }
+
+  void setResult(NestingResult result) => state = result;
+}

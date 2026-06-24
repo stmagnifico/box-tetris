@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../core/utils/volume_formatter.dart';
 import '../../domain/services/optimization_runner.dart';
 import '../providers/box_list_provider.dart';
 import '../widgets/optimization_loading_overlay.dart';
@@ -17,16 +18,6 @@ class HomeScreen extends ConsumerStatefulWidget {
 class _HomeScreenState extends ConsumerState<HomeScreen> {
   bool _isOptimizing = false;
 
-  String _formatVolume(double v) {
-    if (v >= 1000000) {
-      return '${(v / 1000000).toStringAsFixed(2)} m³';
-    }
-    if (v >= 1000) {
-      return '${(v / 1000).toStringAsFixed(1)} L';
-    }
-    return '${v.toStringAsFixed(0)} cm³';
-  }
-
   Future<void> _runOptimization() async {
     if (_isOptimizing) return;
 
@@ -39,7 +30,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     try {
       final result = await runOptimization(boxes);
       if (!mounted) return;
-      ref.read(nestingResultProvider.notifier).state = result;
+      ref.read(nestingResultProvider.notifier).setResult(result);
       await Navigator.of(context).push(
         MaterialPageRoute<void>(
           builder: (_) => const ResultsScreen(),
@@ -66,10 +57,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   tooltip: 'Clear all',
                   onPressed: _isOptimizing
                       ? null
-                      : () {
-                          ref.read(boxListProvider.notifier).clear();
-                          ref.read(nestingResultProvider.notifier).state = null;
-                        },
+                      : () => ref.read(boxListProvider.notifier).clear(),
                   icon: const Icon(Icons.delete_outline),
                 ),
             ],
@@ -127,7 +115,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         subtitle: Text(
                           '${box.width} × ${box.height} × ${box.depth} cm'
                           '${box.wallThickness > 0 ? '\nWall: ${box.wallThickness} cm' : ''}'
-                          '\nVolume: ${_formatVolume(box.volume)}',
+                          '\nVolume: ${formatVolume(box.volume)}',
                         ),
                         trailing: Row(
                           mainAxisSize: MainAxisSize.min,
@@ -144,14 +132,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                               icon: const Icon(Icons.close),
                               onPressed: _isOptimizing
                                   ? null
-                                  : () {
-                                      ref
-                                          .read(boxListProvider.notifier)
-                                          .removeBox(box.id);
-                                      ref
-                                          .read(nestingResultProvider.notifier)
-                                          .state = null;
-                                    },
+                                  : () => ref
+                                      .read(boxListProvider.notifier)
+                                      .removeBox(box.id),
                             ),
                           ],
                         ),

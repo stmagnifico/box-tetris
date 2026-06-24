@@ -1,5 +1,4 @@
 import 'package:box_tetris/features/boxes/domain/entities/box.dart';
-import 'package:box_tetris/features/boxes/domain/entities/nesting_node.dart';
 import 'package:box_tetris/features/boxes/domain/services/box_optimizer.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -11,12 +10,6 @@ List<Box> _seedBoxes() => [
       Box(id: '4', label: 'Flat Board', width: 25, height: 25, depth: 2),
       Box(id: '5', label: 'Big Block', width: 15, height: 15, depth: 15),
     ];
-
-void _printTree(NestingNode n, [int d = 0]) {
-  // ignore: avoid_print
-  print('${'  ' * d}${n.box.label}');
-  for (final c in n.children) _printTree(c, d + 1);
-}
 
 void main() {
   test('12 cube fits in 15 cube physically', () {
